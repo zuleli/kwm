@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string-array name="sources">
+        <item>@string/googlesearch</item>
+        <item>@string/yellowpage</item>
+        <item>@string/googlemap</item>
+        <item>@string/ebay</item>
+        <item>@string/amazon</item>
+        <item>@string/costco</item>
+        <item>@string/youtube</item>
+
+
+    </string-array>
+    <string-array name="sources_menu">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+
+
+    </string-array>
+
+
+    <string-array name="language">
+        <item>English</item>
+        <item>简体中文</item>
+
+    </string-array>
+    <string-array name="language_menu">
+        <item>en</item>
+        <item>zh</item>
+        <item>en-US</item>
+        <item>az</item>
+        <item>de</item>
+        <item>el</item>
+        <item>es</item>
+        <item>fr</item>
+        <item>gd</item>
+        <item>hi</item>
+        <item>hu</item>
+        <item>id</item>
+        <item>it</item>
+        <item>ja</item>
+        <item>ko</item>
+        <item>nb</item>
+        <item>nl</item>
+        <item>pl</item>
+        <item>ru</item>
+        <item>sv</item>
+        <item>th</item>
+        <item>uz</item>
+        <item>zh-CN</item>
+        <item>zh-TW</item>
+        <item>zh-HK</item>
+        <item>en-GB</item>
+        <item>tr</item>
+        <item>eu</item>
+        <item>he</item>
+        <item>pt-BR</item>
+        <item>ar</item>
+        <item>ro</item>
+        <item>mk</item>
+        <item>en-AU</item>
+        <item>sr</item>
+        <item>sk</item>
+        <item>cy</item>
+        <item>da</item>
+
+    </string-array>
+
+    <string-array name="colors">
+        <item>Red</item>
+        <item>Blue</item>
+        <item>Green</item>
+        <item>Black</item>
+        <item>Brown</item>
+        <item>Cyan</item>
+        <item>Cyan</item>
+        <item>Gold</item>
+        <item>Grey</item>
+        <item>Magenta</item>
+        <item>Maroon</item>
+        <item>Navy</item>
+        <item>Olive</item>
+        <item>Orange</item>
+        <item>Pink</item>
+        <item>Purple</item>
+        <item>Tomato</item>
+        <item>White</item>
+        <item>Yellow</item>
+        <item>Default Main Window</item>
+        <item>Default Float Button</item>
+
+    </string-array>
+    <string-array name="colors_menu">
+        <item>#FF0000</item>
+        <item>#0000FF</item>
+        <item>#00FF00</item>
+        <item>#000000</item>
+        <item>#A52A2A</item>
+        <item>#00FFFF</item>
+        <item>#ffff99</item>
+        <item>#FFD700</item>
+        <item>#808080</item>
+        <item>#FF00FF</item>
+        <item>#800000</item>
+        <item>#000080</item>
+        <item>#808000</item>
+        <item>#FFA500</item>
+        <item>#FFC0CB</item>
+        <item>#800080</item>
+        <item>#FF6347</item>
+        <item>#FFFFFF</item>
+        <item>#FFFF00</item>
+        <item>#DFF7F4</item>
+        <item>#008800</item>
+    </string-array>
+
+    <string-array name="sysreload">
+        <item>NO</item>
+        <item>YES</item>
+    </string-array>
+
+    <string-array name="sysreload_menu">
+    <item>NO</item>
+    <item>YES</item>
+    </string-array>
+
+</resources>

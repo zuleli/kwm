@@ -1,0 +1,40 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="net.compuways.keywordsmanager.MainActivityFragment"
+    tools:showIn="@layout/activity_main"
+    android:weightSum="1"
+    android:orientation="vertical"
+    android:background="@color/abc_search_url_text_normal">
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/selectasite"
+        android:id="@+id/messagView"
+        android:background="@color/highlighted_text_material_dark"
+        android:textSize="20sp"
+        android:textIsSelectable="false"
+        android:layout_weight="0"
+        android:layout_gravity="bottom"
+        android:gravity="center_horizontal" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/lvwSelections"
+        android:choiceMode="singleChoice"
+        android:clickable="false"
+        android:elevation="@dimen/elevation"
+        android:focusable="false"
+        android:background="#d8f4f5"
+        android:layout_weight="0"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="0dp" />
+
+
+</LinearLayout>

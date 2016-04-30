@@ -1,0 +1,105 @@
+<resources>
+    <string name="action_settings">Settings</string>
+    <string name="btnSelectionAddText">Add Keyword</string>
+
+    <string name="selectasite">Web Site:</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+    <string name="setting_local" translatable="false">LocalSeting</string>
+    <string name="sourcesetting" translatable="false">sourcesetting</string>
+    <string name="deletesetting" translatable="false">deletesetting</string>
+
+    <!-- TODO:Keyword -->
+    <string name="cnRestaurantText">Chinese Restaurant</string>
+    <string name="fastfoodText">Fast Food</string>
+    <string name="gasStationPrice"><![CDATA[Gas Station & Price]]></string>
+    <string name="bank">Bank</string>
+    <string name="news">News</string>
+    <string name="airport">Airport</string>
+    <string name="calculator">Calculator</string>
+    <string name="clock">Clock</string>
+    <string name="calendar">Calendar</string>
+    <string name="movies">movies</string>
+    <string name="cheapflight">Cheap Flight</string>
+    <string name="horscope">Horoscop</string>
+    <string name="grocery">Grocery</string>
+    <string name="supermarket">Supermarket</string>
+    <string name="restaurant">Restaurant</string>
+    <string name="italianrestaurant">Italian Restaurant</string>
+    <string name="library">Library</string>
+    <string name="postoffice">Post Office</string>
+    <string name="solitaire">Solitaire</string>
+    <string name="games">Games</string>
+    <string name="mortgagecalculator">Mortgage calculator</string>
+    <string name="unblockedgame">Unblocked Games</string>
+
+    <!-- TODO: Source -->
+    <string name="googlemap">Google Map</string>
+    <string name="googlesearch">Google Search</string>
+    <string name="yellowpage">Yellow Page</string>
+    <string name="amazon">Amazon</string>
+    <string name="ebay">Ebay</string>
+    <string name="costco">Costco</string>
+    <string name="weather">Weather</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <string name="helplines">Keywords Manager, version: 1.0.0\n\nThis app saves frequently used search keywords for you.You can use this app to search for your local information: the business location in Google Map, the phone number in Yellow Page,the weather condition,etc.\n\n1.
+        Touch the keyword in the screen,the app will use this keyword to do the respective search for you\n\n2.You need to touch the right bottom circle button(Green) to bring up the information sources menu to select one of the information sources. The default source is the google search.
+        \n\n3.Touch the center right circle button(Purple) to bring up new keyword entry window.You can add new keyword here.
+        \n\n4.To delete a keyword,touch the red "X" icon in the top toolbar  to enter [Delete Mode] and touch the keyword to delete it.Touching the red "X" icon again will return to [Search Mode]
+        \n\n5.Touch the blue button in the center bottom to launch one of your daily tools.
+        \n\n6.Touch HOME icon in toolbar to select a place as your local
+        \n\n7.Settings allows you customize the look and your preference.This app is required to restart to make change take effect.
+        \n\n8.Your device must have Google Map and broswer installed to use this app properly.
+        \n\n9.To improve this app in next release,if you have any comment or suggestion, please send it to keywordsmanager@gmail.com.Thanks!</string>
+    <string name="youtube">You Tube</string>
+    <string name="cance">Cancel</string>
+    <string name="addlaunch"><![CDATA[Add&search]]></string>
+    <string name="newkeyword">New Keyword</string>
+    <string name="enternewkeyword">Enter New Keword Here:</string>
+    <string name="yes">Yes</string>
+    <string name="no">NO</string>
+    <string name="delete">Delete Keyword</string>
+    <string name="areyousuredelete">Are you sure that you want to delete</string>
+    <string name="selectsource">Select A default information Source</string>
+    <string name="helphead">Help</string>
+    <string name="ok">OK</string>
+    <string name="local">Local:</string>
+    <string name="source">Source:</string>
+    <string name="language">Language</string>
+    <string name="sources">Sources</string>
+    <string name="mainWindowBackgroudColor">Main Window Background Color</string>
+    <string name="mainWindowTextColor">Main Window Text Color</string>
+    <string name="keywordAddButtonColor">Keyword Add Button Color</string>
+    <string name="sourceButtonColor">Source Button Color</string>
+    <string name="colorSelectionMsg">Select Color Here:</string>
+    <string name="selectlanguage">Select a Language</string>
+    <string name="systemkwmsg">Select if you want to reload system kewwords</string>
+    <string name="systemKeywords">Systme Embeded Keywords</string>
+    <string name="app_name">Keywords</string>
+    <string name="deleteMSG">was deleted.\nYou are in delete mode.\nTo return to search mode, touch the red "X" again</string>
+    <string name="deletetitle">Not allowed</string>
+    <string name="smdeletemsg">You are in delete mode. Touch the red "X" icon again to return to search mode</string>
+    <string name="sources_menu" translatable="false">sources_menu</string>
+    <string name="language_menu" translatable="false">language_menu</string>
+    <string name="colors" translatable="false">colors</string>
+    <string name="colors_menu" translatable="false">colors_menu</string>
+    <string name="sysreload" translatable="false">sysreload</string>
+    <string name="sysreload_menu" translatable="false">sysreload_menu</string>
+    <string name="facebook">Facebook</string>
+    <string name="twitter">Twitter</string>
+    <string name="email">Email</string>
+    <string name="sms">SMS</string>
+    <string name="contacts">Contacts</string>
+    <string name="selecttool">Please select one of the tools</string>
+    <string name="camera">Camera</string>
+    <string name="toolButtonColor">Tools Button Color</string>
+    <string name="justadd">Add Only</string>
+    <string name="sendcomment">Send Coments Now</string>
+    <string name="commentsugestion">Comment or Suggestion</string>
+    <string name="yourcommenthere">Your comment or suggestion here:\n</string>
+    <string name="emailtitle">Send Email</string>
+
+
+</resources>

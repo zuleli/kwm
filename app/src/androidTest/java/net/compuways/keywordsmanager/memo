@@ -1,0 +1,48 @@
+to do list:
+gitHub
+junit
+
+map4life:
+1.change list to circle
+2.manage content in desktop and use it in phone
+3.can choose app to add
+4.toast message too long
+5.background to be added picture
+6.notify user when local is not set
+
+
+
+//  builder = new AlertDialog.Builder(this);
+                TextView myMsg = new TextView(this);
+                myMsg.setText(getString(R.string.helplines));
+                myMsg.setGravity(Gravity.DISPLAY_CLIP_HORIZONTAL);
+                builder.setTitle(getString(R.string.helphead)).setIcon(R.drawable.common_google_signin_btn_icon_dark_focused)
+                        .setNeutralButton(getString(R.string.ok), null).setView(myMsg).show();
+
+
+                             int[][] states = new int[][] {
+                                        new int[] { android.R.attr.state_enabled}, // enabled
+                                        new int[] {-android.R.attr.state_enabled}, // disabled
+                                        new int[] {-android.R.attr.state_checked}, // unchecked
+                                        new int[] { android.R.attr.state_pressed}  // pressed
+                                };
+
+                                int[] colors = new int[] {
+                                        Color.BLACK,
+                                        Color.parseColor(SP.getString("flAddButtonColor","#008800")),
+                                        Color.GREEN,
+                                        Color.parseColor(SP.getString("flAddButtonColor","#008800"))
+                                };
+
+                                ColorStateList myList = new ColorStateList(states, colors);
+                                fab.setBackgroundTintList(myList);
+
+                                colors = new int[] {
+                                        Color.BLACK,
+                                        Color.parseColor(SP.getString("flSourcesButtonColor","#008800")),
+                                        Color.GREEN,
+                                        Color.parseColor(SP.getString("flSourcesButtonColor","#008800"))
+                                };
+
+                                myList = new ColorStateList(states, colors);
+                                sources.setBackgroundTintList(myList);

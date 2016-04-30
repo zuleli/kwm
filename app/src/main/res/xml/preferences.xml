@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference android:title="@string/sources"
+        android:summary="@string/selectsource"
+        android:key="source"
+        android:defaultValue="0"
+        android:entries="@array/sources"
+        android:entryValues="@array/sources_menu" />
+    <ListPreference android:title="@string/language"
+        android:summary="@string/selectlanguage"
+        android:key="language"
+        android:defaultValue="en"
+        android:entries="@array/language"
+        android:entryValues="@array/language_menu" />
+
+    <ListPreference android:title="@string/mainWindowBackgroudColor"
+        android:summary="@string/colorSelectionMsg"
+        android:key="mainListviewbgColor"
+        android:defaultValue="#DFF7F4"
+        android:entries="@array/colors"
+        android:entryValues="@array/colors_menu" />
+
+    <ListPreference android:title="@string/mainWindowTextColor"
+        android:summary="@string/colorSelectionMsg"
+        android:key="mainListviewftColor"
+        android:defaultValue="#000000"
+        android:entries="@array/colors"
+        android:entryValues="@array/colors_menu" />
+
+    <ListPreference android:title="@string/keywordAddButtonColor"
+        android:summary="@string/colorSelectionMsg"
+        android:key="flAddButtonColor"
+        android:defaultValue="#FF00FF"
+        android:entries="@array/colors"
+        android:entryValues="@array/colors_menu" />
+
+    <ListPreference android:title="@string/sourceButtonColor"
+        android:summary="@string/colorSelectionMsg"
+        android:key="flSourcesButtonColor"
+        android:defaultValue="#008800"
+        android:entries="@array/colors"
+        android:entryValues="@array/colors_menu" />
+
+    <ListPreference android:title="@string/toolButtonColor"
+        android:summary="@string/colorSelectionMsg"
+        android:key="fltoolButtonColor"
+        android:defaultValue="#0000FF"
+        android:entries="@array/colors"
+        android:entryValues="@array/colors_menu" />
+
+    <!--defaultValue Set to YES to enable startup loading system keyword.After finished, programicall set to NO -->
+    <ListPreference android:title="@string/systemKeywords"
+        android:summary="@string/systemkwmsg"
+        android:key="syskwreload"
+        android:defaultValue="YES"
+        android:entries="@array/sysreload"
+        android:entryValues="@array/sysreload_menu" />
+</PreferenceScreen>
