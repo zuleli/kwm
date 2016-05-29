@@ -93,8 +93,6 @@
         <item>White</item>
         <item>Yellow</item>
         <item>Default Main Window</item>
-        <item>Default Float Button</item>
-
     </string-array>
     <string-array name="colors_menu">
         <item>#FF0000</item>
@@ -117,7 +115,48 @@
         <item>#FFFFFF</item>
         <item>#FFFF00</item>
         <item>#DFF7F4</item>
-        <item>#008800</item>
+
+    </string-array>
+
+    <string-array name="bgcolors">
+        <item>Marble</item>
+        <item>Marble2</item>
+        <item>Marble3</item>
+        <item>Marble4</item>
+        <item>Marble5</item>
+        <item>Marble6</item>
+        <item>Marble7</item>
+        <item>Wood</item>
+        <item>Wood2</item>
+        <item>Wood3</item>
+        <item>Wood4</item>
+        <item>Carpet</item>
+        <item>Carpet2</item>
+        <item>Carpet3</item>
+        <item>Carpet4</item>
+        <item>Carpet5</item>
+        <item>Carpet6</item>
+
+    </string-array>
+    <string-array name="bgcolors_menu">
+        <item>marble</item>
+        <item>marble2</item>
+        <item>marble3</item>
+        <item>marble4</item>
+        <item>marble5</item>
+        <item>marble6</item>
+        <item>marble7</item>
+        <item>wood</item>
+        <item>wood2</item>
+        <item>wood3</item>
+        <item>wood4</item>
+        <item>carpet</item>
+        <item>carpet2</item>
+        <item>carpet3</item>
+        <item>carpet4</item>
+        <item>carpet5</item>
+        <item>carpet6</item>
+
     </string-array>
 
     <string-array name="sysreload">
@@ -128,6 +167,16 @@
     <string-array name="sysreload_menu">
     <item>NO</item>
     <item>YES</item>
+    </string-array>
+
+    <string-array name="inconname">
+        <item>ON</item>
+        <item>OFF</item>
+    </string-array>
+
+    <string-array name="inconname_menu">
+        <item>ON</item>
+        <item>OFF</item>
     </string-array>
 
 </resources>

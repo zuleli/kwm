@@ -2,29 +2,36 @@ package net.compuways.keywordsmanager;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,12 +58,17 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
 
     private ListView lvwSelections;
     private TextView messageView;
+    private Button btnTools, btnSources, btnAdKW;
 
     private String message = "", keywordValue = "", localcity = "", country = "", state = "", city = "";
     //localcity is the name of city, city is search string, may contain "%2c" character
     private int PLACE_PICKER_REQUEST = 1, sourceID = 0, textColorInt = -1;
     private boolean appStatus = false, editStatus = false, deleteStatus = false;
     private double latitude = 0.0, longitude = 0.0;
+    private int recordcount = 0;
+    private boolean deletable = false;
+    private LinearLayout linearLayout;
+
 
     private final ArrayList<Keyword> list = new ArrayList<Keyword>();
     protected StableArrayAdapter adapter;
@@ -65,6 +77,8 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
     private Intent intent = null;
     private FragmentManager fm;
     private SharedPreferences SP;
+    final Context context = getActivity();
+
     public MainActivityFragment() {
         super();
     }
@@ -82,6 +96,14 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
                 .build();
         messageView = (TextView) view.findViewById(R.id.messagView);
         lvwSelections = (ListView) view.findViewById(R.id.lvwSelections);
+        linearLayout = (LinearLayout) view.findViewById(R.id.linerLayout);
+        btnTools = (Button) view.findViewById(R.id.btnTools);
+        btnSources = (Button) view.findViewById(R.id.btnSources);
+        btnAdKW = (Button) view.findViewById(R.id.btnAdkw);
+        btnTools.setOnClickListener(btnToolsListener);
+        btnSources.setOnClickListener(btnSourcesListener);
+        btnAdKW.setOnClickListener(btnAdKWListener);
+
         adapter = new StableArrayAdapter(getActivity(),
                 android.R.layout.simple_list_item_1, list);
         lvwSelections.setAdapter(adapter);
@@ -89,9 +111,29 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         lvwSelections.setItemsCanFocus(true);
 
         SP = PreferenceManager.getDefaultSharedPreferences(getActivity().getBaseContext());
-
         textColorInt = Color.parseColor(SP.getString("mainListviewftColor", "#000000"));
-        lvwSelections.setBackgroundColor(Color.parseColor(SP.getString("mainListviewbgColor", "#DFF7F4")));
+        String color = SP.getString("mainListviewbgColor", "wood");
+        String lstr = SP.getString("language", "EN").trim();
+
+        if (color.contains("wood")) {
+            defaultBG(lstr,color);
+
+        } else if (color.contains("marble")) {
+            linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), getDrawable(color)));
+            lvwSelections.setBackground(ContextCompat.getDrawable(getActivity(), getDrawable(color)));
+            if (lstr.equalsIgnoreCase("ZH")) {
+                btnTools.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.wm_tools_cn));
+                btnSources.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.wm_sources_cn));
+                btnAdKW.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.wm_adkw_cn));
+            } else {
+                btnTools.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.wm_tools));
+                btnSources.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.wm_sources));
+                btnAdKW.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.wm_adkw));
+            }
+        } else {
+            defaultBG(lstr,color);
+        }
+
 
         //load saved isntance
         if (savedInstanceState != null) {
@@ -103,8 +145,8 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
             keywordValue = savedInstanceState.getString("keywordValue", "");
             latitude = savedInstanceState.getDouble("latitude", 0);
             longitude = savedInstanceState.getDouble("longitude", 0);
-            ArrayList<Keyword> tem=savedInstanceState.getParcelableArrayList("data");
-            if(tem.size()>0) {
+            ArrayList<Keyword> tem = savedInstanceState.getParcelableArrayList("data");
+            if (tem.size() > 0) {
                 adapter.clearData();
                 for (Keyword kw : tem) {
                     adapter.addItem(kw);
@@ -121,18 +163,413 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         //When app first start up and bundle ==null
         {
             sourceID = 0;
-            if(SP.getString("flAddButtonColor","XXXXXX").equalsIgnoreCase("xxxxxx"))
-            SP.edit().putString("flAddButtonColor", "#FF00FF").commit();
-
-            if(SP.getString("flAddButtonColor","XXXXXX").equalsIgnoreCase("xxxxxx"))
-                SP.edit().putString("flAddButtonColor", "#FF00FF").commit();
-
             localized();
         }
-
-
         messagShow();
         return view;
+    }
+
+    private void defaultBG(String lstr,String color) {
+        linearLayout.setBackground(ContextCompat.getDrawable(getActivity(), getDrawable(color)));
+        lvwSelections.setBackground(ContextCompat.getDrawable(getActivity(),getDrawable(color)));
+        if (lstr.equalsIgnoreCase("ZH")) {
+            btnTools.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.yw_tools_cn));
+            btnSources.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.yw_sources_cn));
+            btnAdKW.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.yw_adkw_cn));
+        } else {
+            btnTools.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ywoodtools));
+            btnSources.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ywoodsources));
+            btnAdKW.setBackground(ContextCompat.getDrawable(getActivity(), R.drawable.ywoodkw));
+        }
+    }
+
+    public boolean isDeletable() {
+        return deletable;
+    }
+
+    public void setDeletable(boolean deletable) {
+        this.deletable = deletable;
+    }
+
+    private String nameformat(String name){
+        name=name.replace("Google","").trim();
+        if(name.length()<=11){
+            return name;
+        }else{
+            int index=name.lastIndexOf(" ");
+            if(index<0){
+                name=name.substring(0,10)+"\n"+name.substring(10);
+            }else if(index>10){
+                name=name.replace(" ","");
+                name=name.substring(0,10)+"\n"+name.substring(10);
+            }else{
+                name=name.substring(0,index)+"\n"+name.substring(index+1);
+            }
+        }
+
+        return name;
+    }
+    private View.OnClickListener btnToolsListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            if (deletable) {
+                notallowed(builder);
+                return;
+            }
+
+
+
+            final ArrayList<String> toolspkg = tcallback.getPkgs();
+
+            CustomDialog.Builder customBuilder = new
+                    CustomDialog.Builder(getActivity()).setLayoutID(R.layout.tools);
+
+            final GridLayout gridLayout = customBuilder.getGridLayout();
+
+            final PackageManager p = getActivity().getPackageManager();
+            int pn = toolspkg.size();
+            gridLayout.setColumnCount(4);
+            gridLayout.setRowCount((int) Math.ceil(pn / 2.0));
+            int r = 0, c = 0;
+
+            for (int i = 0; i < pn; i++) {
+                try {
+                    final ApplicationInfo ap = p.getApplicationInfo(toolspkg.get(i), 0);
+                    ImageView icon = new ImageView(getActivity());
+                    icon.setImageDrawable(ap.loadIcon(p));
+
+                    LinearLayout ll=new LinearLayout(getActivity());
+                    ll.setOrientation(LinearLayout.VERTICAL);
+                    ViewGroup.LayoutParams pa=new ViewGroup.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT,
+                            ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                    icon.setLayoutParams(pa);
+
+                    GridLayout.Spec rowSpan = GridLayout.spec(r);
+                    GridLayout.Spec colspan = GridLayout.spec(c);
+                    GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+                            rowSpan, colspan);ll.addView(icon);
+
+                    if(SP.getString("iconname","ON").equalsIgnoreCase("ON")) {
+                        TextView txt = new TextView(getActivity());
+                        String name = nameformat(p.getApplicationLabel(ap).toString());
+                        ;
+                        txt.setText(name);
+                        txt.setLayoutParams(new ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                ViewGroup.LayoutParams.WRAP_CONTENT));
+                        ll.addView(txt);
+                        gridParam.setMargins(10, 0, 10, 0);
+                    }else{
+                        gridParam.setMargins(20, 20, 20, 20);
+                    }
+
+                    gridLayout.addView(ll, gridParam);
+
+                    final int ii = i;
+                    icon.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Intent launchIntent = p.getLaunchIntentForPackage(toolspkg.get(ii));
+                            if (launchIntent != null) {
+                                startActivity(launchIntent);
+                            } else {
+                                Toast.makeText(getActivity(), p.getApplicationLabel(ap) + " doesn't work", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                    c++;
+                    if (c == 4) {
+                        c = 0;
+                        r++;
+                    }
+                } catch (PackageManager.NameNotFoundException e) {
+                    Toast.makeText(getActivity(), "Application Name Not Found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+            String color = SP.getString("toolButtonBG", "wood4");
+            customBuilder.setBackground(getDrawable(color)).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            CustomDialog dia = customBuilder.create();
+            dia.show();
+
+        }
+    };
+    public int getDrawable(String bg){
+        switch(bg){
+            case "wood":
+                return R.drawable.wood;
+            case "wood2":
+                return R.drawable.wood2;
+            case "wood3":
+                return R.drawable.wood3;
+            case "wood4":
+                return R.drawable.wood4;
+            case "marble":
+                return R.drawable.marble;
+            case "marble2":
+                return R.drawable.marble2;
+            case "marble3":
+                return R.drawable.marble3;
+            case "marble4":
+                return R.drawable.marble4;
+            case "marble5":
+                return R.drawable.marble5;
+            case "marble6":
+                return R.drawable.marble6;
+            case "marble7":
+                return R.drawable.marble7;
+            case "carpet":
+                return R.drawable.carpet;
+            case "carpet2":
+                return R.drawable.carpet2;
+            case "carpet3":
+                return R.drawable.carpet3;
+            case "carpet4":
+                return R.drawable.carpet4;
+            case "carpet5":
+                return R.drawable.carpet5;
+            case "carpet6":
+                return R.drawable.carpet6;
+
+        }
+
+        return R.drawable.wood;
+    }
+    private View.OnClickListener btnSourcesListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+            if (deletable) {
+                notallowed(builder);
+                return;
+            }
+
+            CustomDialog.Builder customBuilder = new
+                    CustomDialog.Builder(getActivity()).setLayoutID(R.layout.tools);
+
+            final GridLayout gridLayout = customBuilder.getGridLayout();
+
+
+            gridLayout.setColumnCount(2);
+            gridLayout.setRowCount(4);
+
+            ImageView icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.gsearch));
+            //icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            GridLayout.Spec rowSpan = GridLayout.spec(0);
+            GridLayout.Spec colspan = GridLayout.spec(0);
+            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            gridLayout.addView(icon, gridParam);
+            icon.setOnClickListener(gsearchListener);
+
+            icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.yp));
+            //  icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(0);
+            colspan = GridLayout.spec(1);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            gridLayout.addView(icon, gridParam);
+            icon.setOnClickListener(ypListener);
+
+            icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.googlemaps));
+            // icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(1);
+            colspan = GridLayout.spec(0);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            gridLayout.addView(icon, gridParam);
+            icon.setOnClickListener(gmapListener);
+
+            icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.youtube));
+            //  icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(1);
+            colspan = GridLayout.spec(1);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            gridLayout.addView(icon, gridParam);
+            icon.setOnClickListener(youtubeListener);
+
+            icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.ebay));
+            //  icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(2);
+            colspan = GridLayout.spec(0);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            gridLayout.addView(icon, gridParam);
+            icon.setOnClickListener(ebayListener);
+
+            icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.amazon));
+            //  icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(2);
+            colspan = GridLayout.spec(1);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            gridLayout.addView(icon, gridParam);
+            icon.setOnClickListener(amazonListener);
+
+            icon = new ImageView(getActivity());
+            icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.costco));
+            // icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(3);
+            colspan = GridLayout.spec(0);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridParam.setMargins(25, 25, 25, 25);
+            icon.setOnClickListener(costcoListener);
+            gridLayout.addView(icon, gridParam);
+
+
+            if (SP.getString("language", "EN").trim().equalsIgnoreCase("ZH")) {
+                icon = new ImageView(getActivity());
+                icon.setImageDrawable(ContextCompat.getDrawable(getActivity(), R.drawable.baidu));
+                // icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+                rowSpan = GridLayout.spec(3);
+                colspan = GridLayout.spec(1);
+                gridParam = new GridLayout.LayoutParams(
+                        rowSpan, colspan);
+                gridLayout.addView(icon, gridParam);
+                gridParam.setMargins(25, 25, 25, 25);
+                icon.setOnClickListener(baiduListener);
+            }
+            String color = SP.getString("sourceButtonBG", "wood2");
+            customBuilder.setBackground(getDrawable(color)).setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            CustomDialog dia = customBuilder.create();
+
+
+            dia.show();
+
+
+        }
+    };
+    private View.OnClickListener gsearchListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(0);
+        }
+    };
+    private View.OnClickListener ypListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(1);
+        }
+    };
+    private View.OnClickListener gmapListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(2);
+        }
+    };
+    private View.OnClickListener youtubeListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(6);
+        }
+    };
+    private View.OnClickListener ebayListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(3);
+        }
+    };
+    private View.OnClickListener amazonListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(4);
+        }
+    };
+    private View.OnClickListener costcoListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(5);
+        }
+    };
+    private View.OnClickListener baiduListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            setSourceID(7);
+        }
+    };
+
+    private View.OnClickListener btnAdKWListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+            if (deletable) {
+                notallowed(alertDialog);
+
+                return;
+            }
+
+            CustomDialog.Builder customBuilder = new
+                    CustomDialog.Builder(getActivity()).setLayoutID(R.layout.dialog);
+            final TextView input = customBuilder.getEditText();
+
+            String color = SP.getString("addButtonBG", "marble7");
+            customBuilder.setBackground(getDrawable(color)).setPositiveButton(getResources().getString(R.string.addlaunch), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    String rst = addOP(dialog, input);
+                    if (rst != null) {
+                        setKeyword(rst);
+                        mainOP();
+                    } else {
+                        Toast.makeText(getActivity(), " Something Wrong!", Toast.LENGTH_LONG).show();
+                    }
+
+                    dialog.dismiss();
+                }
+            }).setNeutralButton(getResources().getString(R.string.justadd), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    addOP(dialog, input);
+                    dialog.dismiss();
+                }
+            }).setNegativeButton(getResources().getString(R.string.cance), new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            }).create().show();
+
+
+
+        }
+    };
+
+
+    public void increment() {
+        recordcount++;
+    }
+
+    public void notallowed(AlertDialog.Builder alertDialog) {
+        alertDialog.setIcon(R.drawable.kwicon);
+        alertDialog.setTitle(getString(R.string.deletetitle)).setMessage(getString(R.string.smdeletemsg))
+                .setNeutralButton("OK", null).show();
     }
 
     public void onSaveInstanceState(Bundle savedInstanceState) {
@@ -145,8 +582,42 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         savedInstanceState.putInt("sourceIDValue", sourceID);
         savedInstanceState.putDouble("longitude", longitude);
         savedInstanceState.putDouble("latitude", latitude);
-        savedInstanceState.putParcelableArrayList("data",adapter.getData());
+        savedInstanceState.putParcelableArrayList("data", adapter.getData());
 
+    }
+
+    private String addOP(DialogInterface dialog, TextView input) {
+        if (input.getText() != null && input.getText().length() > 0) {
+            if (recordcount > 100) {// need to be changed
+                dialog.cancel();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle("Attention!").setMessage("Thank you for trying this application. \nYou have reached the maxium number of free edition" +
+                        "\nThank you! ")
+                        .setNeutralButton("OK", null).show();
+                return null;
+            }
+
+            Keyword item = new Keyword(0, input.getText().toString(), 1);
+            addItem(item);
+            DatabaseHandler db = new DatabaseHandler(getActivity());
+            long n = db.addKeyword(item);
+            input.setText("");
+            if (n < 0) {
+                Toast.makeText(getActivity(), " Database addition has failed", Toast.LENGTH_LONG).show();
+            } else {
+                item.set_id(n);
+                increment();
+                Toast.makeText(getActivity(), item + " was added", Toast.LENGTH_LONG).show();
+
+            }
+            db.close();
+            return item.toString();
+
+        } else if (input.getText() != null && input.getText().length() == 0) {
+            Toast.makeText(getActivity(), " You didn't enter anything!", Toast.LENGTH_LONG).show();
+        }
+
+        return null;
     }
 
     public void setKeyword(String kw) {
@@ -201,6 +672,30 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         kw = new Keyword(0, getString(R.string.weather), 0);
         db.addKeyword(kw);
 
+        PackageManager p = getActivity().getPackageManager();
+        List<ApplicationInfo> packs = p.getInstalledApplications(0);
+        int pn = packs.size();
+
+        for (ApplicationInfo ap : packs) {
+            String pkname=ap.packageName.toLowerCase();
+            String name=p.getApplicationLabel(ap).toString().toLowerCase();
+            if(name.contains("facebook") ||
+                    name.contains("twitter") ||
+                    name.contains("weather") ||
+                    name.contains("calcul") ||
+                    name.contains("calen") ||
+                    name.contains("youtube")||
+                    name.contains("message") ||
+                    name.contains("clock") ||
+                    name.contains("mail") ||
+                    name.contains("dialer") ||
+                    name.contains("news") ||
+                    name.contains("maps") ||
+                    name.contains("camera")){
+                tcallback.getPkgs().add(pkname);
+                db.addToolItem(0,pkname);
+            }
+        }
 
     }
 
@@ -248,10 +743,6 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         }
     }
 
-    public void setEditStatus(boolean status) {
-        editStatus = status;
-
-    }
 
     public void setSelectionsRedBorder() {
         lvwSelections.setBackgroundColor(Color.parseColor("#ff007f"));
@@ -260,31 +751,14 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
     }
 
     public void setSelectionsNormal() {
-        lvwSelections.setBackgroundColor(Color.parseColor(SP.getString("mainListviewbgColor", "#DFF7F4")));
+
+        String color = SP.getString("mainListviewbgColor", "wood");
+        lvwSelections.setBackground(ContextCompat.getDrawable(getActivity(),getDrawable(color)));
         textColorInt = Color.parseColor(SP.getString("mainListviewftColor", "#000000"));
         adapter.notifyDataSetChanged();
 
     }
 
-    private View.OnClickListener btnEditListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            editOP();
-
-        }
-    };
-
-    public void editOP() {
-        if (fm == null) {
-            fm = getActivity().getSupportFragmentManager();
-        }
-        editStatus = true;
-        appStatus = true;
-        FragmentTransaction transaction = fm.beginTransaction();
-        transaction.replace(R.id.fragment, new EditFragment());//????
-        transaction.addToBackStack(null);
-        transaction.commit();
-    }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -335,7 +809,7 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         super.onStart();
         //When user requests system keywords reload or new installation
         DatabaseHandler db = new DatabaseHandler(getActivity());
-        if (SP.getString("syskwreload", "NO").equalsIgnoreCase("YES")||SP.getString("syskwreload", "XXX").equalsIgnoreCase("XXX") ) {
+        if (SP.getString("syskwreload", "NO").equalsIgnoreCase("YES") || SP.getString("syskwreload", "XXX").equalsIgnoreCase("XXX")) {
             db.deleteKeywordByType("0");
             initiateDB(db);
             SP.edit().putString("syskwreload", "NO").commit(); // set to default no reload
@@ -345,23 +819,25 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
                 adapter.addItem(kw);
 
             }
+            tcallback.setPkgs(db.getAllToolItems(0));
 
-        }else if(SP.getString("syskwreload", "XXX").equalsIgnoreCase("NO")){
+        } else if (SP.getString("syskwreload", "XXX").equalsIgnoreCase("NO")) {
             List<Keyword> allkeywords = db.getAllKeywords();
             adapter.clearData();//clean up before populating
             for (Keyword kw : allkeywords) {
                 adapter.addItem(kw);
 
             }
+            tcallback.setPkgs(db.getAllToolItems(0));
         }
 
         db.close();
 
 
-
     }
+
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
         messagShow();
     }
@@ -372,7 +848,7 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         @Override
         public void onItemClick(AdapterView<?> parent, final View view,
                                 final int position, long id) {
-            if (tcallback.isDeletable()) {
+            if (deletable) {
 
                 final Keyword deletedItem = adapter.getItem(position);
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -437,22 +913,22 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
                 break;
             case 0://google search
 
-               // if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA")|| country.equalsIgnoreCase("加拿大")) {
-                    uri = Uri.parse("https://www.google.ca/search?q=" + keywordValue+"&oq="+keywordValue+"&aqs=mobile-gws-lite");
+                // if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA")|| country.equalsIgnoreCase("加拿大")) {
+                uri = Uri.parse("https://www.google.ca/search?q=" + keywordValue + "&oq=" + keywordValue + "&aqs=mobile-gws-lite");
 
                 //} else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA")|| country.equalsIgnoreCase("美国")) {
                 //    uri = Uri.parse("https://www.google.com/search?q=" + keywordValue+"&oq="+keywordValue+"&aqs=mobile-gws-lite");
-               // }
+                // }
 
 
                 intent = new Intent(Intent.ACTION_VIEW, uri);
                 break;
             case 1://yellow page
-                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA")|| country.equalsIgnoreCase("加拿大")) {
+                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA") || country.equalsIgnoreCase("加拿大")) {
                     uri = Uri.parse("http://www.yellowpages.ca/search/si/1/" + keywordValue + "/" + city + "%2c" + state);
                     intent = new Intent(Intent.ACTION_VIEW, uri);
 
-                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA")|| country.equalsIgnoreCase("美国")) {
+                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA") || country.equalsIgnoreCase("美国")) {
                     uri = Uri.parse("http://m.yp.com/search?search_term=" + keywordValue + "&search_type=category" + "&lat=" + latitude + "&lon=" + longitude);
                     intent = new Intent(Intent.ACTION_VIEW, uri);
                 }
@@ -462,18 +938,18 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
 
             case 4://Amazon
 
-                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA")|| country.equalsIgnoreCase("加拿大")) {
+                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA") || country.equalsIgnoreCase("加拿大")) {
                     uri = Uri.parse("https://www.amazon.ca/gp/aw/s/ref=nb_sb_noss?k=" + keywordValue);
-                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA")|| country.equalsIgnoreCase("美国")) {
+                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA") || country.equalsIgnoreCase("美国")) {
                     uri = Uri.parse("https://www.amazon.com/gp/aw/s/ref=is_s?k=" + keywordValue);
                 }
                 intent = new Intent(Intent.ACTION_VIEW, uri);
 
                 break;
             case 3://ebay
-                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA")|| country.equalsIgnoreCase("加拿大")) {
+                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA") || country.equalsIgnoreCase("加拿大")) {
                     uri = Uri.parse("http://www.ebay.ca/sch/i.html?_nkw=" + keywordValue);
-                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA")| country.equalsIgnoreCase("美国")) {
+                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA") | country.equalsIgnoreCase("美国")) {
                     uri = Uri.parse("http://www.ebay.com/sch/i.html?_nkw=" + keywordValue);
                 }
 
@@ -481,10 +957,10 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
 
                 break;
             case 5://cosco
-                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA")|| country.equalsIgnoreCase("加拿大")) {
+                if (country.equalsIgnoreCase("Canada") || country.equalsIgnoreCase("CA") || country.equalsIgnoreCase("加拿大")) {
                     uri = Uri.parse("http://www.costco.ca/CatalogSearch?keyword=" + keywordValue);
 
-                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA")| country.equalsIgnoreCase("美国")) {
+                } else if (country.equalsIgnoreCase("United States") || country.equalsIgnoreCase("USA") | country.equalsIgnoreCase("美国")) {
                     uri = Uri.parse("http://www.costco.com/CatalogSearch?keyword=" + keywordValue);
                 }
 
@@ -538,7 +1014,7 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
                 startActivity(Intent.createChooser(intent, ""));
                 return;
             case 4://send small message
-                uri= Uri.parse("smsto:"+"");
+                uri = Uri.parse("smsto:" + "");
                 intent = new Intent(Intent.ACTION_SENDTO, uri);
                 intent.putExtra("compose_mode", true);
                 startActivity(intent);
@@ -550,12 +1026,12 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
                 break;
 
             case 6://calculator
-                ArrayList<HashMap<String,Object>> items =new ArrayList<HashMap<String,Object>>();
+                ArrayList<HashMap<String, Object>> items = new ArrayList<HashMap<String, Object>>();
                 PackageManager pm;
                 pm = getActivity().getPackageManager();
                 List<PackageInfo> packs = pm.getInstalledPackages(0);
                 for (PackageInfo pi : packs) {
-                    if( pi.packageName.toString().toLowerCase().contains("calcul")){
+                    if (pi.packageName.toString().toLowerCase().contains("calcul")) {
                         HashMap<String, Object> map = new HashMap<String, Object>();
                         map.put("appName", pi.applicationInfo.loadLabel(pm));
                         map.put("packageName", pi.packageName);
@@ -563,13 +1039,12 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
                     }
                 }
 
-                if(items.size()>=1){
+                if (items.size() >= 1) {
                     String packageName = (String) items.get(0).get("packageName");
                     Intent i = pm.getLaunchIntentForPackage(packageName);
                     if (i != null)
                         startActivity(i);
-                }
-                else{
+                } else {
                     Toast.makeText(getActivity(), "You don't have appropriate calculator app installed", Toast.LENGTH_LONG).show();
                 }
 
@@ -792,10 +1267,11 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
             mIdmap = objects;
         }
 
-        public void setData(ArrayList<Keyword> data){
-            mIdmap=data;
-           // notifyDataSetChanged();
+        public void setData(ArrayList<Keyword> data) {
+            mIdmap = data;
+            // notifyDataSetChanged();
         }
+
         @Override
         public View getView(int position, View convertView,
                             ViewGroup parent) {
@@ -812,7 +1288,8 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         public ArrayList<Keyword> getData() {
             return mIdmap;
         }
-        public void clearData(){
+
+        public void clearData() {
             mIdmap.clear();
         }
 
@@ -846,10 +1323,11 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         }
 
     }
-    public int getSize()
-    {
+
+    public int getSize() {
         return adapter.getData().size();
     }
+
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
@@ -864,10 +1342,11 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
     }
 
     public interface main2main {
-        boolean isDeletable();
+        //  boolean isDeletable();
 
-        void setRecordCount(int count);
-
+        //  void setRecordCount(int count);
+        ArrayList<String> getPkgs();
+        void setPkgs(ArrayList<String> pkgs);
         void setSelectionsRedBorder();
 
         void setSelectionsNormal();
@@ -885,11 +1364,9 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         messageView.setText(text);
         if (chars.length > 17) {
             messageView.setTextSize(10);
-        }else
-        if (chars.length > 20) {
+        } else if (chars.length > 20) {
             messageView.setTextSize(8);
-        }else
-        if (chars.length >=23) {
+        } else if (chars.length >= 23) {
             messageView.setTextSize(6);
         }
 
@@ -919,7 +1396,7 @@ public class MainActivityFragment extends Fragment implements GoogleApiClient.On
         try {
             tcallback = (main2main) activity;
             DatabaseHandler db = new DatabaseHandler(getActivity());
-            tcallback.setRecordCount(db.getKeywordsCount());
+            recordcount = (db.getKeywordsCount());
             db.close();
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString()

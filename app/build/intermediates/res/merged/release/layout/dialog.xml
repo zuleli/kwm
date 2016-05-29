@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:minWidth="280dip"
+    android:layout_height="wrap_content"
+    android:id="@+id/tlsDia"
+    android:weightSum="3">
+
+    <LinearLayout
+        android:orientation="vertical"
+
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <TextView
+            style="@style/DialogText.Title"
+            android:id="@+id/title"
+            android:paddingRight="8dip"
+            android:paddingLeft="8dip"
+
+            android:layout_width="match_parent"
+            android:layout_height="47dp"
+            android:text="@string/newkeyword"
+            android:gravity="center" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/content"
+        android:orientation="vertical"
+
+        android:layout_width="match_parent"
+        android:layout_height="51dp"
+        android:weightSum="1"
+        android:layout_weight="1">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/input" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="New Button"
+            android:id="@+id/neutralButton" />
+
+        <Button
+            android:id="@+id/positiveButton"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="x" />
+
+        <Button
+            android:id="@+id/negativeButton"
+            android:layout_width="wrap_content"
+            android:layout_weight="0.5"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:text="r" />
+
+    </LinearLayout>
+
+</LinearLayout>

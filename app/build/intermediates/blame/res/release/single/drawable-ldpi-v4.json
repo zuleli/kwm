@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-ldpi-v4/ic_help_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-ldpi/ic_help_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-ldpi-v4/ic_local_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-ldpi/ic_local_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-ldpi-v4/ic_delete_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-ldpi/ic_delete_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-ldpi-v4/edit_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-ldpi/edit_24dp.png"
+    }
+]

@@ -1,0 +1,86 @@
+[
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_ic_star_half_black_48dp.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_ic_star_half_black_48dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_tab_indicator_mtrl_alpha.9.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_tab_indicator_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_005.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_005.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/ic_help_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-xxxhdpi/ic_help_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_ic_star_half_black_36dp.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_ic_star_half_black_36dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/ic_local_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-xxxhdpi/ic_local_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/edit_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-xxxhdpi/edit_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/powered_by_google_dark.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.4.0/res/drawable-xxxhdpi/powered_by_google_dark.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_switch_track_mtrl_alpha.9.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_switch_track_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_spinner_mtrl_am_alpha.9.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_spinner_mtrl_am_alpha.9.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_btn_switch_to_on_mtrl_00012.9.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_btn_switch_to_on_mtrl_00012.9.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_ic_star_black_16dp.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_ic_star_black_16dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_ic_star_black_36dp.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_ic_star_black_36dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/places_ic_clear.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.4.0/res/drawable-xxxhdpi/places_ic_clear.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/places_ic_search.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.4.0/res/drawable-xxxhdpi/places_ic_search.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_000.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_scrubber_control_to_pressed_mtrl_000.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_ic_star_half_black_16dp.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_ic_star_half_black_16dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_btn_switch_to_on_mtrl_00001.9.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/powered_by_google_light.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-location/8.4.0/res/drawable-xxxhdpi/powered_by_google_light.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/ic_delete_24dp.png",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/release/drawable-xxxhdpi/ic_delete_24dp.png"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/release/drawable-xxxhdpi-v4/abc_ic_star_black_48dp.png",
+        "source": "/home/me/w/kwm/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0-alpha2/res/drawable-xxxhdpi-v4/abc_ic_star_black_48dp.png"
+    }
+]

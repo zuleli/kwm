@@ -1,0 +1,15 @@
+English:
+Amzon , no keyword in search box
+Costco, general erro
+
+
+Chinese: amzon,ebay, weather no respond.
+         now ebay OK,weather OK
+when first open, no chinese display in message bar
+when chinese message shows in message bar,after rotate device, chinese message changs to English message
+solved,put messagView in onResume();
+
+1. dialog icon needs to be changed
+2. "Somthing wrong" message need to be cleaned up
+3. dialog button needs to be redesign
+4. sources item cliked to disappear.

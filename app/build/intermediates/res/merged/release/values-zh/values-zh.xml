@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">设置</string>
+    <string name="addlaunch">加词并搜索</string>
+    <string name="airport">机场</string>
+    <string name="amazon">亚马逊</string>
+    <string name="app_name">搜索词经理</string>
+    <string name="appssources">软件源背景图片</string>
+    <string name="areyousuredelete">您确定要删除搜索词：</string>
+    <string name="bank">银行</string>
+    <string name="btnSelectionAddText">加搜索词</string>
+    <string name="calculator">计算器</string>
+    <string name="calendar">日历</string>
+    <string name="camera">照像</string>
+    <string name="cance">取消</string>
+    <string name="cheapflight">便宜机票</string>
+    <string name="clock">时钟</string>
+    <string name="cnRestaurantText">中餐馆</string>
+    <string name="colorSelectionMsg">选择背景图片：</string>
+    <string name="commentsugestion">评论或建议</string>
+    <string name="contacts">联系人</string>
+    <string name="costco">好市多</string>
+    <string name="delete">删除搜索词</string>
+    <string name="deleteMSG">已经删除。\n您处于删除模式。\n要回复搜索模式，再触及红色“X”一次。</string>
+    <string name="deletetitle">不允许操作</string>
+    <string name="ebay">易趣网</string>
+    <string name="email">电邮</string>
+    <string name="emailtitle">发送邮件</string>
+    <string name="enternewkeyword">输入新搜索词：</string>
+    <string name="facebook">脸书</string>
+    <string name="fastfoodText">快餐</string>
+    <string name="games">游戏</string>
+    <string name="gasStationPrice">汽油价格</string>
+    <string name="googlemap">谷歌地图</string>
+    <string name="googlesearch">谷歌搜索</string>
+    <string name="grocery">杂货</string>
+    <string name="helphead">帮助</string>
+    <string name="helplines">搜索词经理, 版本: 1.2.0\n\n本软件储存日常用生活词汇，免除您手机打字麻烦.您可以用这软件搜索生活常用的资源。\n\n1.触击搜索词即开始根据您的信息源搜索。
+        \n\n2.【信息源】按纽可选择您用来搜索的信息源。\n\n3.触及[+关键词]按纽可添加您自己的搜索词。
+        \n\n4.触击上方红色X图标进入搜索词删除模式，可删除搜索词，再次触击红色X图标恢复搜索模式。\n\n5.触击【工具】按纽可打开您日常生活中的常用软件。【编辑】图标可打开手机里所有安装
+        过的软件目录。可以在那里打勾来选择或取消。最后按【update】按钮完成选择。
+        \n\n6.触击房子图标可设定本地位置。\n\n7.设置需要重起软件才能生效。\n\n8.您的手机必须安装谷歌地图和浏览器才可以使用本软件。
+        \n\n9.为了未来版本改进本软件，如有建议请发邮件至：keywordsmanager@gmail.com。谢谢！</string>
+    <string name="horscope">星座</string>
+    <string name="italianrestaurant">意大利餐馆</string>
+    <string name="justadd">只加词不搜索</string>
+    <string name="keywordAddButtonColor">搜索词添加栏背景图片</string>
+    <string name="language">语言</string>
+    <string name="library">图书馆</string>
+    <string name="local">本地：</string>
+    <string name="mainWindowBackgroudColor">主窗口背景颜色</string>
+    <string name="mainWindowTextColor">主窗口文字颜色</string>
+    <string name="mortgagecalculator">按揭计算器</string>
+    <string name="movies">电影</string>
+    <string name="newkeyword">加新搜索词</string>
+    <string name="news">新闻</string>
+    <string name="no">不</string>
+    <string name="ok">好的</string>
+    <string name="postoffice">邮局</string>
+    <string name="restaurant">餐馆</string>
+    <string name="selectasite">网址</string>
+    <string name="selectlanguage">选择语言</string>
+    <string name="selectsource">选择默认的信息来源：</string>
+    <string name="selecttool">请选择工具之一</string>
+    <string name="sendcomment">现在发送评论</string>
+    <string name="smdeletemsg">您处在删除模式.再次触击红色“X”图标可恢复到搜索模式</string>
+    <string name="sms">短信</string>
+    <string name="solitaire">扑克游戏</string>
+    <string name="source">来源：</string>
+    <string name="sourceButtonColor">信息源背景图片</string>
+    <string name="sources">来源</string>
+    <string name="supermarket">超市</string>
+    <string name="systemKeywords">系统固有的搜索词</string>
+    <string name="systemkwmsg">您需要重新导入系统固有的搜索词吗？</string>
+    <string name="title_activity_settings">设置</string>
+    <string name="toolButtonColor">工具栏背景图片</string>
+    <string name="twitter">推特</string>
+    <string name="unblockedgame">无限制游戏</string>
+    <string name="weather">天气</string>
+    <string name="yellowpage">黄页</string>
+    <string name="yes">是</string>
+    <string name="yourcommenthere">您的评论或建议:\n</string>
+    <string name="youtube">油管</string>
+</resources>

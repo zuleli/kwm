@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/ic_delete_24dp.xml",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_delete_24dp.xml"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/edit_24dp.xml",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/debug/drawable-anydpi-v21/edit_24dp.xml"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/ic_local_24dp.xml",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_local_24dp.xml"
+    },
+    {
+        "merged": "/home/me/w/kwm/app/build/intermediates/res/merged/debug/drawable-anydpi-v21/ic_help_24dp.xml",
+        "source": "/home/me/w/kwm/app/build/generated/res/pngs/debug/drawable-anydpi-v21/ic_help_24dp.xml"
+    }
+]

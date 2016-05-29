@@ -3,11 +3,16 @@ package net.compuways.keywordsmanager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.ColorStateList;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,28 +21,34 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity implements EditFragment.listUpdate,MainActivityFragment.main2main {
+public class MainActivity extends AppCompatActivity implements MainActivityFragment.main2main {
     MainActivityFragment mf;
-    private int recordcount=0;
-    private boolean deletable=false;
-    private  SharedPreferences SP;
+    private SharedPreferences SP;
+    private ArrayList<String> toolspkg=new ArrayList();
+
     @Override
     public void setSelectionsNormal() {
         mf.setSelectionsNormal();
-        deletable=false;
+        mf.setDeletable(false);
     }
 
     @Override
     public void setSelectionsRedBorder() {
         mf.setSelectionsRedBorder();
-        deletable=true;
+        mf.setDeletable(true);
     }
 
     @Override
@@ -47,18 +58,18 @@ public class MainActivity extends AppCompatActivity implements EditFragment.list
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         SP = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        if(mf==null && savedInstanceState==null) {  // to make sure preferences settings don't interfere with savedstate
+        if (mf == null && savedInstanceState == null) {  // to make sure preferences settings don't interfere with savedstate
             mf = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
             mf.setSourceID(Integer.parseInt(SP.getString("source", "0")));// to be modified
         }
 
-        final String lstr=SP.getString("language","EN").trim();
-        Locale locale =null;
+        final String lstr = SP.getString("language", "EN").trim();
+        Locale locale = null;
 
-        if(lstr.equalsIgnoreCase("zh")){
-            locale=new Locale("zh");
-        }else{
-            locale=new Locale("en");
+        if (lstr.equalsIgnoreCase("zh")) {
+            locale = new Locale("zh");
+        } else {
+            locale = new Locale("en");
         }
         Locale.setDefault(locale);
         Configuration config = new Configuration();
@@ -67,280 +78,18 @@ public class MainActivity extends AppCompatActivity implements EditFragment.list
                 getBaseContext().getResources().getDisplayMetrics());
 
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
-                if (deletable) {
-                    notallowed(alertDialog);
-
-                    return;
-                }
-
-
-                alertDialog.setTitle(getString(R.string.newkeyword));
-                alertDialog.setMessage(getString(R.string.enternewkeyword));
-
-                final EditText input = new EditText(MainActivity.this);
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.MATCH_PARENT);
-                input.setLayoutParams(lp);
-                alertDialog.setView(input);
-                alertDialog.setIcon(R.drawable.common_google_signin_btn_icon_dark_focused);
-
-                alertDialog.setPositiveButton(getString(R.string.addlaunch),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-
-                                String rst = addOP(dialog, input);
-                                if (rst != null) {
-                                    mf.setKeyword(rst);
-                                    mf.mainOP();
-                                } else {
-                                    Toast.makeText(MainActivity.this, " Something Wrong!", Toast.LENGTH_LONG).show();
-                                }
-
-                            }
-                        });
-
-                alertDialog.setNegativeButton(getString(R.string.cance),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                alertDialog.setNeutralButton(getString(R.string.justadd),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                addOP(dialog, input);
-                            }
-                        });
-
-                alertDialog.show();
-            }
-        });
-
-        FloatingActionButton sources = (FloatingActionButton) findViewById(R.id.sources);
-        sources.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                if(deletable){
-                    notallowed(builder);
-                    return;
-                }
-
-                CharSequence items[]=null;
-
-                if(lstr.equalsIgnoreCase("ZH")){
-                    items=new CharSequence[] {getString(R.string.googlesearch),
-                            getString(R.string.yellowpage),
-                            getString(R.string.googlemap),
-                            getString(R.string.ebay),
-                            getString(R.string.amazon),
-                            getString(R.string.costco),
-                            getString(R.string.youtube),"百度"};
-                }else{
-                    items= new CharSequence[] { getString(R.string.googlesearch),
-                            getString(R.string.yellowpage),
-                            getString(R.string.googlemap),
-                            getString(R.string.ebay),
-                            getString(R.string.amazon),
-                            getString(R.string.costco),
-                            getString(R.string.youtube)};
-                }
-
-
-                builder.setTitle(getString(R.string.selectsource));
-                builder.setIcon(R.drawable.common_google_signin_btn_icon_dark_focused);
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        mf.setSourceID(which);
-
-                        if (which == 2) {
-                            mf.mainOP();
-                            return;
-                        }
-                    }
-                });
-                builder.setNegativeButton(getString(R.string.cance),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                builder.show();
-
-            }
-        });
-
-        FloatingActionButton tool = (FloatingActionButton) findViewById(R.id.tool);
-        tool.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                if (deletable) {
-                    notallowed(builder);
-
-                    return;
-                }
-
-
-                CharSequence items[] = null;
-
-                if (lstr.equalsIgnoreCase("ZH")) {
-                    items = new CharSequence[]{getString(R.string.facebook),
-                            getString(R.string.twitter),
-                            getString(R.string.weather),
-                            getString(R.string.email),
-                            getString(R.string.sms),
-                            getString(R.string.camera),
-                            getString(R.string.calculator),"CNN News","CBC News","万维网"};
-                } else {
-                    items = new CharSequence[]{getString(R.string.facebook),
-                            getString(R.string.twitter),
-                            getString(R.string.weather),
-                            getString(R.string.email),
-                            getString(R.string.sms),
-                            getString(R.string.camera),
-                            getString(R.string.calculator),
-                    "CNN News","CBC News"};
-                }
-
-
-                builder.setTitle(getString(R.string.selecttool));
-                builder.setIcon(R.drawable.common_google_signin_btn_icon_dark_focused);
-                builder.setItems(items, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-
-                        mf.toolOP(which);
-
-                    }
-                });
-                builder.setNegativeButton(getString(R.string.cance),
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
-                builder.show();
-
-            }
-        });
-
-        int[][] states = new int[][] {
-                new int[] {-android.R.attr.state_hovered}, // disabled
-        };
-
-        int[] colors = new int[] {
-                Color.parseColor(SP.getString("flAddButtonColor","#FF00FF")),
-        };
-
-        ColorStateList myList = new ColorStateList(states, colors);
-        fab.setBackgroundTintList(myList);
-
-        colors = new int[] {
-                Color.parseColor(SP.getString("flSourcesButtonColor","#008800")),
-        };
-
-        myList = new ColorStateList(states, colors);
-        sources.setBackgroundTintList(myList);
-
-        colors = new int[] {
-                Color.parseColor(SP.getString("fltoolButtonColor","#0000FF")),
-        };
-
-        myList = new ColorStateList(states, colors);
-        tool.setBackgroundTintList(myList);
-
-
     }
-    private void notallowed(AlertDialog.Builder alertDialog){
-        alertDialog.setIcon(R.drawable.common_google_signin_btn_icon_dark_focused);
-        alertDialog.setTitle(getString(R.string.deletetitle)).setMessage(getString(R.string.smdeletemsg))
-                .setNeutralButton("OK",null).show();
-    }
-    private String addOP(DialogInterface dialog,TextView input){
-        if(input.getText()!=null && input.getText().length()>0){
-            if(getRecordCount()>100){// need to be changed
-                dialog.cancel();
-                AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                builder.setTitle("Attention!").setMessage("Thank you for trying this application. \nYou have reached the maxium number of free edition" +
-                        "\nThank you! ")
-                        .setNeutralButton("OK",null).show();
-                return null;
-            }
-            Keyword item=new Keyword(0,input.getText().toString(),1);
-            addItem(item);
-            DatabaseHandler db=new DatabaseHandler(MainActivity.this);
-            long n=db.addKeyword(item);
-            input.setText("");
-            if(n<0){
-                Toast.makeText(MainActivity.this, " Database addition has failed", Toast.LENGTH_LONG).show();
-            }else{
-                item.set_id(n);
-                increment();
-                Toast.makeText(this, item + " was added", Toast.LENGTH_LONG).show();
 
-            }
-            db.close();
-            return item.toString();
 
-        }else if(input.getText()!=null && input.getText().length()==0){
-            Toast.makeText(MainActivity.this, " You didn't enter anything!", Toast.LENGTH_LONG).show();
-        }
-
-        return null;
-    }
     @Override
-    protected  void onStart(){
+    protected void onStart() {
         super.onStart();
         mf = (MainActivityFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
-       //mf.adapter.notifyDataSetChanged();
-
 
     }
 
 
-    @Override
-    public void increment() {
-        recordcount++;
-    }
-
-    @Override
-    public void addItem(Keyword item) {
-        mf.addItem(item);
-    }
-
-    @Override
-    public void setRecordCount(int count) {
-        recordcount=count;
-    }
-
-
-    @Override
-    public void editStatus(boolean status) {
-
-        mf.setEditStatus(status);
-    }
-
-    @Override
-    public int getRecordCount() {
-        return recordcount;
-    }
-
-
-    @Override
-    public boolean isDeletable() {
-        return deletable;
-    }
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -355,11 +104,11 @@ public class MainActivity extends AppCompatActivity implements EditFragment.list
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        switch(id){
+        switch (id) {
             case R.id.action_settings:
                 AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
-                if(deletable){
-                    notallowed(builder);
+                if (mf.isDeletable()) {
+                    mf.notallowed(builder);
                     return false;
                 }
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
@@ -368,43 +117,185 @@ public class MainActivity extends AppCompatActivity implements EditFragment.list
             case R.id.action_edit:
                 builder = new AlertDialog.Builder(MainActivity.this);
 
-                builder.setTitle(getString(R.string.helphead)).setIcon(R.drawable.common_google_signin_btn_icon_dark_focused).setMessage(getString(R.string.helplines))
-                        .setNeutralButton(getString(R.string.ok),null).setPositiveButton(getString(R.string.sendcomment),new DialogInterface.OnClickListener() {
+                builder.setTitle(getString(R.string.helphead)).setIcon(R.drawable.kwicon).setMessage(getString(R.string.helplines))
+                        .setNeutralButton(getString(R.string.ok), null).setPositiveButton(getString(R.string.sendcomment), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("plain/text");
                         intent.putExtra(Intent.EXTRA_EMAIL, new String[]{"keywordsmanager@gmail.com"});
                         intent.putExtra(Intent.EXTRA_SUBJECT, getString(R.string.commentsugestion));
                         intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.yourcommenthere));
-                        startActivity(Intent.createChooser(intent,getString(R.string.emailtitle)));
+                        startActivity(Intent.createChooser(intent, getString(R.string.emailtitle)));
                     }
                 }).show();
                 return true;
             case R.id.action_source:
-                if(deletable){
-                    deletable=false;
+                if (mf.isDeletable()) {
+                    mf.setDeletable(false);
                     setSelectionsNormal();
-                }else{
-                    deletable=true;
+                } else {
+                    mf.setDeletable(true);
                     setSelectionsRedBorder();
                 }
 
 
                 return true;
             case R.id.action_local:
-                if(deletable){
+                if (mf.isDeletable()) {
                     builder = new AlertDialog.Builder(MainActivity.this);
-                    notallowed(builder);
+                    mf.notallowed(builder);
                     return false;
                 }
                 mf.getHomeOP();//locate the local
                 return true;
+
+            case R.id.action_apps:
+                if (mf.isDeletable()) {
+                    builder = new AlertDialog.Builder(MainActivity.this);
+                    mf.notallowed(builder);
+                    return false;
+                }
+
+                editapps();
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
 
         }
 
 
+    }
+
+    private void editapps() {
+        //GridLayout gridLayout=null;
+        CustomDialog.Builder customBuilder = new
+                CustomDialog.Builder(this).setLayoutID(R.layout.tools);
+
+        final GridLayout gridLayout = customBuilder.getGridLayout();
+
+        PackageManager p = getPackageManager();
+        List<ApplicationInfo> packs = p.getInstalledApplications(0);
+        int pn = packs.size();
+        gridLayout.setColumnCount(4);
+        gridLayout.setRowCount((int) Math.ceil(pn));
+        int r = 0, c = 0;
+
+        for (ApplicationInfo ap : packs) {
+
+            if (ap.loadIcon(p).getIntrinsicWidth()>180) { // remove too big icon
+                continue;
+            }
+
+            CheckBox cb = new CheckBox(this);
+            if(checkPkgName(ap.packageName)){
+                cb.setChecked(true);
+            }
+            GridLayout.Spec rowSpan = GridLayout.spec(r);
+            GridLayout.Spec colspan = GridLayout.spec(c);
+            GridLayout.LayoutParams gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridLayout.addView(cb, gridParam);
+
+            c++;
+            ImageView icon = new ImageView(this);
+            icon.setImageDrawable(ap.loadIcon(p));
+           // icon.setLayoutParams(new ViewGroup.LayoutParams(100, 100));
+            rowSpan = GridLayout.spec(r);
+            colspan = GridLayout.spec(c);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridLayout.addView(icon, gridParam);
+
+            c++;
+            TextView pkname = new TextView((this));
+           // name.setText(p.getApplicationLabel(ap));
+            pkname.setText(ap.packageName);
+            rowSpan = GridLayout.spec(r);
+            colspan = GridLayout.spec(c);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            pkname.setVisibility(View.GONE);
+            gridLayout.addView(pkname, gridParam);
+
+            c++;
+            TextView name = new TextView((this));
+            // name.setText(p.getApplicationLabel(ap));
+            name.setText(p.getApplicationLabel(ap));
+            rowSpan = GridLayout.spec(r);
+            colspan = GridLayout.spec(c);
+            gridParam = new GridLayout.LayoutParams(
+                    rowSpan, colspan);
+            gridLayout.addView(name, gridParam);
+
+            c++;
+            if (c == 4) {
+                c = 0;
+                r++;
+            }
+
+        }
+
+
+        String color = SP.getString("appssourcesBG", "marble6");
+        customBuilder.setBackground(mf.getDrawable(color)).setPositiveButton("Update", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int which) {
+                process(gridLayout);
+                dialog.dismiss();
+            }
+        });
+
+        CustomDialog dia = customBuilder.create();
+
+
+        dia.show();
+
+    }
+    private boolean checkPkgName(String pkgname){
+
+        for(String name:toolspkg){
+            if(name.equalsIgnoreCase(pkgname)){
+                return true;
+            }
+        }
+
+        return false;
+    }
+    @Override
+    public ArrayList<String> getPkgs() {
+        return toolspkg;
+    }
+
+    @Override
+    public void setPkgs(ArrayList<String> pkgs) {
+        toolspkg=pkgs;
+    }
+
+    private void process(GridLayout gridLayout) {
+        toolspkg.clear();
+        DatabaseHandler db = new DatabaseHandler(this);
+        db.deleteToolItemByType("0");
+        int size = gridLayout.getChildCount();
+        for (int i = 0; i < size; i++) {
+            View gridChild = gridLayout.getChildAt(i);
+
+            if (gridChild instanceof CheckBox) {
+                if(((CheckBox) gridChild).isChecked()){
+                    i++;
+                    i++;
+                    String r=((TextView)gridLayout.getChildAt(i)).getText().toString();
+                    toolspkg.add(r);
+
+                    long n = db.addToolItem(0,r);
+                    if(n<=0){
+                        Toast.makeText(this, " Database Addition Problem", Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            }
+
+        }
+        db.close();
     }
 
 }
